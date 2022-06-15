@@ -108,11 +108,6 @@ object Recap {
   }
 
 
-  def main(args: Array[String]): Unit = {
-    print(anIfExpression)
-    print(codeBlock)
-  }
-
   //scala 3 braceless syntax
   val pairs_v2 = for
     number <- List(1, 2, 3)
@@ -124,16 +119,16 @@ object Recap {
     if (number % 2 == 0)
       println(number)
 
-  val number = for (number <- numbers if number % 2 ==0)
+  val number = for (number <- numbers if number % 2 == 0)
     println(number)
 
 
   println("*******************")
   for (
-  number <- numbers
-   if number % 2 ==0
-   if number > 4
-   ) println(number)
+    number <- numbers
+    if number % 2 == 0
+    if number > 4
+  ) println(number)
 
   class BracelessAnimal:
     def eat: Unit =
@@ -141,5 +136,73 @@ object Recap {
       println("I'm eating")
     end eat
   end BracelessAnimal
+
+  val letters = List("a", "b", "c")
+  val numbers_v2 = List(1, 2, 3)
+
+  for (number <- numbers) {
+    for (letter <- letters) {
+      println(number + " => " + letter)
+    }
+  }
+
+  //Below is the same
+
+  for {
+    number <- numbers
+    letter <- letters
+  } println(number + " => " + letter)
+
+  //Functional for loop does not mutate original list
+  val numbers_v3 = List(1, 2, 3, 4, 5, 6, 6)
+  for (number <- numbers) yield number * 2
+  for (number <- numbers)
+    yield {
+      val n = number * 2
+      println(n)
+    }
+
+  for (number <- numbers if (number % 2 == 0)) yield {
+    number * 2
+  }
+
+  //generates new list
+  val newList: List[String] = for {
+    number <- numbers
+    letter <- letters
+  } yield number + " => " + letter
+  println(newList)
+
+  def plusOneOrZero(number: Int) = {
+    if (number < 0) 0
+    else number + 1
+  }
+  println(plusOneOrZero(-1))
+  println(plusOneOrZero(99))
+
+  //Anonymous function
+  val product = (a: Int, b: Int) => a * b
+  product(2,10)
+
+
+  case class Fruit(name: String)
+
+
+  val apple = Fruit("apple")
+  val orange = Fruit("orange")
+  val kiwi = Fruit("kiwi")
+
+  println(apple)
+
+  val fruitBasket = List(apple, orange, kiwi,orange, kiwi, kiwi, apple, orange)
+  val listOfApple:List[Fruit] = fruitBasket.filter((fruit: Fruit) => fruit.name == "apple")
+  val listOfApple_v2:List[Fruit] = fruitBasket.filter(fruit => fruit.name == "apple")
+  val listOfApple_v3:List[Fruit] = fruitBasket.filter(_.name == "apple") //if var only used one right side
+  listOfApple.foreach(println)
+
+  def main(args: Array[String]): Unit = {
+    print(anIfExpression)
+    print(codeBlock)
+  }
 
 }
